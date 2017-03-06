@@ -46,3 +46,24 @@ function eliteDangerousDate( $dateformatstring, $unixtimestamp = false, $gmt = f
 
 }
 add_action( 'date_i18n', 'eliteDangerousDate', 10, 3 );
+
+
+
+add_filter('get_archives_link', 'getArchiveListElite');
+function getArchiveListElite($item) {
+
+  $regexp = ">(.*) ([0-9]{4})(.*)<\/";
+  if(preg_match("/$regexp/siU", $item, $match)) {
+
+    if(isset($match[2]) && $match[2] > 2010) {
+
+      $dateEd = $match[2]+1286;
+      $linkTxt = str_replace($match[2], $dateEd, $match[0]);
+
+      $item = str_replace($match[0], $linkTxt, $item);
+    }
+
+  }
+
+  return $item;
+}
